@@ -1,9 +1,17 @@
-const jwt_decode = require("jwt-decode");
+const passport = require("passport");
 
-const authenticate = (req, res, next) => {
-  const token = req.headers.authorization;
-  const user = jwt_decode(token);
-  return res.send(user);
+module.exports = (req, res, next) => {
+  passport.authenticate("jwt", (error, user, info) => {
+    if (error) {
+      return next(error);
+    }
+    if (!user) {
+      return res.status(400).json({
+        message: "Authentication Failed",
+      });
+    }
+    req.user = user;
+
+    return next();
+  })(req, res, next);
 };
-
-module.exports = authenticate;

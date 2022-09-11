@@ -1,99 +1,53 @@
+// let User = require("./model/user");
+// let JwtStrategy = require("passport-jwt").Strategy;
+// let ExtractJwt = require("passport-jwt").ExtractJwt;
+// let opts = {};
+// opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+// opts.secretOrKey = "SECRET";
+// opts.issuer = "accounts.examplesoft.com";
+// opts.audience = "yoursite.net";
+
+// module.exports = (passport) => {
+//   passport.use(
+//     new JwtStrategy(opts, async (payload, done) => {
+//       console.log(payload);
+//       let user = await User.findById(payload._id);
+
+//       if (!user) {
+//         return done(null, false);
+//       }
+//       return done(null, user);
+//     })
+//   );
+// };
+
+const JwtStrategy = require("passport-jwt").Strategy;
+
+const ExtractJwt = require("passport-jwt").ExtractJwt;
+
 const User = require("./model/user");
 
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const opts = {};
 
-const GithubStrategy = require("passport-github2").Strategy;
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 
-const FacebookStrategy = require("passport-facebook").Strategy;
+opts.secretOrKey = "SECRET";
 
-const passport = require("passport");
-
-const GOOGLE_CLIENT_ID =
-  "700053057589-6d372oeilhm1vv446p4nh4409tknqtue.apps.googleusercontent.com";
-
-const GOOGLE_CLIENT_SECRET = "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";
-
-const GITHUB_CLIENT_ID = "afa6e59840c404ea179c";
-
-const GITHUB_CLIENT_SECRET = "5ee7ba8a0d50efa8a2a2e30b474e1a95338062f7";
-
-const FACEBOOK_CLIENT_ID = "1108392170110117";
-
-const FACEBOOK_CLIENT_SECRET = "1f9ea24605a809574e6d2284f26d116f";
-
-// Google
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: GOOGLE_CLIENT_ID,
-      clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/google/callback",
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      let user = await User.find({ googleId: profile.id });
-
-      if (user.length === 0) {
-        let newUser = new User({
-          googleId: profile.id,
-          username: profile.displayName,
+module.exports = (passport) => {
+  passport.use(
+    new JwtStrategy(opts, (payload, done) => {
+      User.findOne({ _id: payload._id })
+        .then((user) => {
+          if (!user) {
+            return done(null, false);
+          } else {
+            return done(null, user);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          return done(error);
         });
-        await newUser.save();
-      }
-      done(null, profile);
-    }
-  )
-);
-
-// GitHub
-passport.use(
-  new GithubStrategy(
-    {
-      clientID: GITHUB_CLIENT_ID,
-      clientSecret: GITHUB_CLIENT_SECRET,
-      callbackURL: "/auth/github/callback",
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      let user = await User.find({ googleId: profile.id });
-      console.log(user);
-      if (user.length === 0) {
-        let newUser = new User({
-          googleId: profile.id,
-          username: profile.displayName,
-        });
-        await newUser.save();
-      }
-      done(null, profile);
-    }
-  )
-);
-
-// Facebook
-passport.use(
-  new FacebookStrategy(
-    {
-      clientID: FACEBOOK_CLIENT_ID,
-      clientSecret: FACEBOOK_CLIENT_SECRET,
-      callbackURL: "/auth/github/callback",
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      let user = await User.find({ googleId: profile.id });
-
-      if (user.length === 0) {
-        let newUser = new User({
-          googleId: profile.id,
-          username: profile.displayName,
-        });
-        await newUser.save();
-      }
-      done(null, profile);
-    }
-  )
-);
-
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
+    })
+  );
+};

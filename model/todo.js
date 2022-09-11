@@ -1,12 +1,28 @@
 const mongoose = require("mongoose");
 const todoSchema = mongoose.Schema({
-  username: {
+  title: {
     type: String,
-    require: true,
+    required: true,
   },
-  googleId: {
+  userId: {
     type: String,
-    require: true,
+    required: true,
+  },
+  isComplete: {
+    type: Boolean,
+    required: true,
+  },
+  group: {
+    type: String,
+    required: true,
+  },
+  date: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: String,
+    required: true,
   },
 });
 

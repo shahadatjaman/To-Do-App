@@ -1,32 +1,23 @@
 const express = require("express");
 const app = express();
 const { createServer } = require("http");
+const bodyParser = require("body-parser");
 const httpServer = createServer(app);
 const { mongoose } = require("mongoose");
 const passport = require("passport");
-
-const cookieSession = require("cookie-session");
 const cors = require("cors");
 
-const authRoute = require("./routes/user");
+const authRoute = require("./routes/auth");
 require("dotenv").config();
 
 app.use(cors());
-// Usee Cookie Session
-app.use(
-  cookieSession({
-    name: "session",
-    keys: ["abuhuraia"],
-    maxAge: 24 * 60 * 60 * 100,
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
-require("./passport");
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
 
-app.use("/data", (req, res) => {
-  console.log(req.sessionOptions.maxAge);
-});
+app.use(passport.initialize());
+require("./passport")(passport);
+
 app.use("/auth", authRoute);
 mongoose
   .connect("mongodb://localhost:27017/myRandomDB")
