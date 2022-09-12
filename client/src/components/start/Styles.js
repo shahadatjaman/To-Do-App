@@ -35,6 +35,12 @@ export const Button = styled.div`
 export const Submit = styled.button`
   background: #002bff;
   color: #fff;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled === "true" ? "auto" : "pointer")};
   padding: 1rem;
+`;
+
+export const Error = styled.p`
+  color: red;
+  font-size: 11px;
+  margin-top: 4px;
 `;

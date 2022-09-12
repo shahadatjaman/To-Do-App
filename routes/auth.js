@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const { register } = require("../controller/auth");
+const { register, checkUser } = require("../controller/auth");
 
 const {
   newTodo,
@@ -11,7 +11,10 @@ const {
 } = require("../controller/todo");
 
 const authenticate = require("../authenticate");
+// Check User
+router.post("/checkuser", checkUser);
 
+// Sign Up
 router.post("/register", register);
 
 // Create Todo

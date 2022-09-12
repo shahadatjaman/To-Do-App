@@ -2,9 +2,20 @@ import { useState } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { Wrrapper, Image, Start, Input, Button, Submit, H1 } from "./Styles";
+import {
+  Wrrapper,
+  Image,
+  Start,
+  Input,
+  Button,
+  Submit,
+  H1,
+  Error,
+} from "./Styles";
 
-import { addEmail, register } from "../../feature/auth/register";
+import { checkUser, signUp } from "../../feature/auth/register";
+
+import { Toaster } from "react-hot-toast";
 
 const INIT = {
   email: null,
@@ -16,7 +27,7 @@ const Email = () => {
 
   const [values, setValues] = useState(INIT);
 
-  let { email } = useSelector((state) => state.auth);
+  let { email, isExist, isLoading } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
 
@@ -25,21 +36,30 @@ const Email = () => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
-    if (!values.password) {
-      dispatch(addEmail(values.email));
+
+    if (!values.password && values.email) {
+      dispatch(checkUser(values));
     }
+
     if (values.password && values.password.length < 8) {
       setError("Enter a Strong Password!");
     } else {
       setError(null);
     }
     if (values.email && values.password && values.password.length > 8) {
-      dispatch(register(values));
+      dispatch(signUp(values));
     }
   };
 
   return (
     <Wrrapper>
+      <Toaster
+        toastOptions={{
+          style: {
+            color: "red",
+          },
+        }}
+      />
       <Image
         src="https://res.cloudinary.com/dza2t1htw/image/upload/v1662918816/68747470733a2f2f692e696d6775722e636f6d2f4f764d5a4273392e6a7067_dr8eip.jpg"
         alt=""
@@ -54,6 +74,7 @@ const Email = () => {
             placeholder="Enter Email"
             onChange={chageHandler}
           />
+          {isExist && <Error>{isExist}</Error>}
           <br />
 
           {email && (
@@ -68,13 +89,21 @@ const Email = () => {
                 onChange={chageHandler}
               />
 
-              {error && <p>{error}</p>}
+              {error && <Error>{error}</Error>}
             </>
           )}
 
-          <Button>
-            <Submit type="submit">Get Start</Submit>
-          </Button>
+          {isLoading ? (
+            <Button>
+              <Submit disabled="true" type="submit">
+                Get Start
+              </Submit>
+            </Button>
+          ) : (
+            <Button>
+              <Submit type="submit">Get Start</Submit>
+            </Button>
+          )}
         </form>
       </Start>
     </Wrrapper>

@@ -50,4 +50,21 @@ module.exports = {
       return res.status(200).json({ token });
     });
   },
+  async checkUser(req, res) {
+    let { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Must provid Email!" });
+    }
+
+    let user = await User.findOne({ email: email });
+
+    if (!user) {
+      return res.status(200).json({ email });
+    } else {
+      return res.status(409).json({
+        message: "Your Email Already Exist!",
+      });
+    }
+  },
 };
