@@ -4,13 +4,18 @@ import "./App.css";
 
 import Email from "./components/start/Email";
 
+import { GlobalStyles } from "./styles/GlobalStyles";
+
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Email />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <GlobalStyles />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Email />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
