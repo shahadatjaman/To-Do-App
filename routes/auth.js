@@ -1,35 +1,13 @@
 const router = require("express").Router();
 
-const { register, checkUser } = require("../controller/auth");
+const { register, checkUser, login } = require("../controller/auth");
 
-const {
-  newTodo,
-  updateTodo,
-  completeTask,
-  deleteTask,
-  getTodos,
-} = require("../controller/todo");
-
-const authenticate = require("../authenticate");
 // Check User
 router.post("/checkuser", checkUser);
 
 // Sign Up
 router.post("/register", register);
 
-// Create Todo
-router.post("/todo", authenticate, newTodo);
-
-// Update Tod
-router.post("/update", authenticate, updateTodo);
-
-// Complete task
-router.post("/complete", authenticate, completeTask);
-
-// Delete Task
-router.post("/delete", authenticate, deleteTask);
-
-// All todo's
-router.get("/todos", authenticate, getTodos);
-
+// Login
+router.post("/login", login);
 module.exports = router;

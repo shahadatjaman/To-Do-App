@@ -1,5 +1,5 @@
 module.exports = {
-  todoValidator({ title, group, date }) {
+  todoValidator({ title, taskId, date, desc }) {
     let errors = {};
 
     if (!title) {
@@ -8,11 +8,12 @@ module.exports = {
       errors.title = "Title must provide!";
     }
 
-    if (!group) {
-      errors.group = "Group must provide!";
-    } else if (group.trim() === "") {
-      errors.group = "Group must provide!";
+    if (!taskId) {
+      errors.taskid = "taskId must provide!";
+    } else if (taskId.trim() === "") {
+      errors.taskid = "taskId must provide!";
     }
+
     if (!date) {
       errors.date = "Date must provide!";
     } else if (date.trim() === "") {

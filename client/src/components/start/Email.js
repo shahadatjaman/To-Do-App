@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { useNavigate } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 
@@ -27,7 +29,11 @@ const Email = () => {
 
   const [values, setValues] = useState(INIT);
 
-  let { email, isExist, isLoading } = useSelector((state) => state.auth);
+  let { email, isExist, isLoading, isLogged } = useSelector(
+    (state) => state.auth
+  );
+
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -46,8 +52,9 @@ const Email = () => {
     } else {
       setError(null);
     }
+
     if (values.email && values.password && values.password.length > 8) {
-      dispatch(signUp(values));
+      dispatch(signUp({ ...values, navigate }));
     }
   };
 

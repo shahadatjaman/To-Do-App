@@ -2,6 +2,8 @@ const jwt_decoder = require("jwt-decode");
 
 const User = require("../model/user");
 
+const Task = require("../model/task");
+
 const Todo = require("../model/todo");
 
 const { clientError, serverError } = require("../errors/errors");
@@ -11,11 +13,11 @@ const { todoValidator } = require("../validation/todoValidation");
 module.exports = {
   // Create new Todo
   async newTodo(req, res) {
-    let { title, group, date } = req.body;
+    let { title, date, taskId, desc } = req.body;
 
     let { _id, email } = req.user;
 
-    let { errors, isValid } = todoValidator({ title, group, date });
+    let { errors, isValid } = todoValidator({ title, taskId, date });
 
     // If is not valid Input
     if (!isValid) {
@@ -28,17 +30,24 @@ module.exports = {
       return clientError(res, "User Invalid!");
     }
 
+    let task = await Task.findById(taskId);
+    if (!task) {
+      return res.status(400).json({ ok: false, message: "Task Not Found!" });
+    }
+
     let newTodo = new Todo({
       userId: _id,
       title,
-      group,
+      taskId,
       date,
+      desc,
       isComplete: false,
       createdAt: new Date().toISOString(),
     });
 
     let createdTodo = await newTodo.save();
-
+    task.todos.push(createdTodo._id);
+    await task.save();
     res.status(200).json({ todo: createdTodo });
   },
 
@@ -60,7 +69,7 @@ module.exports = {
     });
   },
   // Complete Task
-  async completeTask(req, res) {
+  async completeTodo(req, res) {
     let { todoId } = req.body;
     if (!todoId) {
       return res.status(400).json({ message: "Must provid Todo Id!" });
@@ -90,7 +99,7 @@ module.exports = {
   },
 
   // Delete Task
-  async deleteTask(req, res) {
+  async deleteTodo(req, res) {
     let { todoId } = req.body;
     if (!todoId) {
       return res.status(400).json({ message: "Must provid Todo Id!" });

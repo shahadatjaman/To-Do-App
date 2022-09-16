@@ -5,6 +5,7 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    text-decoration: none;
 }
 body{
     font-family: 'Lato', sans-serif;
@@ -103,4 +104,8 @@ aside.emoji-picker-react .content-wrapper:before {
   100% { transform: rotate(360deg); }
 }
 
+.active{
+    background: lightskyblue;
+    color: #000;
+}
 `;

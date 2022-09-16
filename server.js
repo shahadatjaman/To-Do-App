@@ -19,6 +19,7 @@ app.use(passport.initialize());
 require("./passport")(passport);
 
 app.use("/auth", authRoute);
+app.use("/", require("./routes/task"));
 mongoose
   .connect("mongodb://localhost:27017/myRandomDB")
   .then((res) => {

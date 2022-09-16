@@ -8,17 +8,21 @@ const todoSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+
   isComplete: {
     type: Boolean,
     required: true,
   },
-  group: {
+  taskId: {
     type: String,
     required: true,
   },
   date: {
     type: String,
     required: true,
+  },
+  desc: {
+    type: String,
   },
   createdAt: {
     type: String,

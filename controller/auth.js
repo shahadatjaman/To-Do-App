@@ -6,9 +6,14 @@ const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcryptjs");
 
-const { serverError } = require("../errors/errors");
+const { serverError, clientError, successLogin } = require("../errors/errors");
+
+const { jwt_token } = require("../utils");
+
+const { loginvalidation } = require("../validation/loginValidation");
 
 module.exports = {
+  // Register
   async register(req, res) {
     let { email, password } = req.body;
     let errors = userValidator({ email, password });
@@ -39,16 +44,31 @@ module.exports = {
 
       // JWT
 
-      let token = jwt.sign(
-        {
-          _id,
-          email,
-        },
-        "SECRET",
-        { expiresIn: "2h" }
-      );
+      let token = jwt_token(_id, email);
       return res.status(200).json({ token });
     });
+  },
+  // Login
+  async login(req, res) {
+    let { email, password } = req.body;
+    let { errors, isValid } = loginvalidation({ email, password });
+
+    if (!isValid) {
+      return clientError(res, errors);
+    }
+
+    let user = await User.findOne({ email });
+    if (!user) {
+      return clientError(res, "nvalid User! try agin");
+    }
+
+    let result = await bcrypt.compare(password, user.password);
+
+    if (!result) {
+      return clientError(res, "Invalid User! try agin");
+    }
+    const token = jwt_token(user._id, user.email);
+    successLogin({ res, token, message: "Login Success!" });
   },
   async checkUser(req, res) {
     let { email } = req.body;
