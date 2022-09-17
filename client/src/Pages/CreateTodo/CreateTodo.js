@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -16,40 +18,61 @@ import { Date } from "./styles";
 
 import { useState } from "react";
 
+import { createNewTodo } from "../../feature/todo/";
+
 const init = {
-  name: "",
-  birthday: "",
+  title: "",
+  date: "",
+  taskId: "",
+  desc: "",
 };
 
 const AddTodo = () => {
-  const [values, setValue] = useState();
+  const [values, setValue] = useState({ ...init });
   const { tasks } = useSelector((state) => state.task);
 
   const dispatch = useDispatch();
 
   const changeHandler = (e) => {
-    console.log(e.target.value);
-    setValue({ [e.target.name]: e.target.value });
+    setValue({ ...values, [e.target.name]: e.target.value });
   };
+
+  const navigate = useNavigate();
 
   const submitHandler = (e) => {
-    e.prevenDafault();
+    e.preventDefault();
+
+    dispatch(createNewTodo({ values, navigate }));
   };
 
+  const { title, date, desc } = values;
   return (
     <TodoWrapper>
       <FormWrapper>
         <H3>Create New TODO</H3>
         <Form onSubmit={submitHandler}>
-          <Input name="name" placeholder="Todo Name" />
+          <Input
+            onChange={changeHandler}
+            name="title"
+            placeholder="Todo Name"
+            value={title}
+            required
+          />
           <Date>
             <Input
               style={{ marginRight: "8px" }}
               type="date"
               onChange={changeHandler}
-              name="birthday"
+              name="date"
+              value={date}
+              required
             />
-            <Select onChange={changeHandler}>
+            <Select
+              defaultValue=""
+              name="taskId"
+              required
+              onChange={changeHandler}
+            >
               <Option disabled selected>
                 Select Task
               </Option>
@@ -63,9 +86,11 @@ const AddTodo = () => {
             </Select>
           </Date>
           <TextArea
-            name="text"
+            name="desc"
+            value={desc}
             onChange={changeHandler}
             placeholder="About Task"
+            required
           />
           <Button type="submit">Create</Button>
         </Form>

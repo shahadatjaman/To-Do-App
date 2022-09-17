@@ -3,7 +3,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
   tasks: [],
   task: null,
-  todos: [],
   error: null,
   isLoading: false,
   taskLoading: false,
@@ -14,7 +13,7 @@ export const createNewTask = createAsyncThunk(
   "create/task",
   async ({ name, navigate }, { rejectWithValue }) => {
     const token = localStorage.getItem("userInfo");
-    console.log(name);
+
     try {
       const response = await fetch("/task", {
         method: "POST",
@@ -37,7 +36,7 @@ export const createNewTask = createAsyncThunk(
 // Get ALL Task
 export const getTasks = createAsyncThunk("get/task", async () => {
   const token = localStorage.getItem("userInfo");
-  console.log(process.env.REACT_APP_SERVER_URL);
+
   return await fetch(`${process.env.REACT_APP_SERVER_URL}/gettask`, {
     method: "GET",
     headers: {
@@ -72,6 +71,7 @@ export const singleTask = createAsyncThunk(
   }
 );
 
+// Task Slice
 const taskSlice = createSlice({
   name: "task",
   initialState,

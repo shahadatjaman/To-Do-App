@@ -2,8 +2,6 @@ const userValidator = require("../validation/userValidation");
 
 const User = require("../model/user");
 
-const jwt = require("jsonwebtoken");
-
 const bcrypt = require("bcryptjs");
 
 const { serverError, clientError, successLogin } = require("../errors/errors");

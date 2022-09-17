@@ -7,13 +7,11 @@ export const Wrapper = styled.div`
 export const TopSection = styled.div``;
 
 export const Select = styled.select`
-  padding: 11px 18px;
   border: 1px solid #ddd;
+  padding: 10px;
+  background: #fff;
   border-radius: 10px;
-  &&:focus {
-    border: 1px solid #ddd !important;
-    outline: none;
-  }
+  box-shadow: 6px 8px 66px 0px #dddddd69;
 `;
 
 export const Option = styled.option``;
@@ -23,6 +21,7 @@ export const TaskName = styled.h2`
   color: #000000de !important;
   text-align: center;
   cursor: pointer;
+  margin-bottom: 2rem;
 `;
 
 export const Down = styled.span`
@@ -133,4 +132,17 @@ export const Empty = styled.div`
   width: 100%;
   text-align: center;
   padding: 4rem;
+`;
+
+export const SerachWrapper = styled.div``;
+
+export const SearchForm = styled.form``;
+
+export const SearchInput = styled.input`
+  border: 1px solid #ddd;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+  width: 100%;
+  box-shadow: 6px 8px 66px 0px #dddddd69;
 `;

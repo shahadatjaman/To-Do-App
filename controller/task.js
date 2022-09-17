@@ -48,21 +48,23 @@ module.exports = {
       return res.status(400).json({
         message: "Task ID Must Provide!",
       });
+    } else if (taskId === "undefined") {
+      return res.status(400).json({
+        message: "Invalid Task ID!",
+      });
     }
     const task = await Task.findById(taskId);
 
-    if (task.userId !== _id.toString()) {
-      return res.status(200).json({
-        message: "Invalid ID",
-      });
+    if (task) {
+      if (task.userId !== _id.toString()) {
+        return res.status(200).json({
+          message: "Invalid ID",
+        });
+      }
     }
-
-    // Find Todo's
-    const todos = await Todo.find({ taskId });
 
     res.status(200).json({
       task,
-      todos,
     });
   },
 };

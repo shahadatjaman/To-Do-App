@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Date = styled.div`
   input {
-    width: 48% !important;
+    width: 40% !important;
   }
 `;
 

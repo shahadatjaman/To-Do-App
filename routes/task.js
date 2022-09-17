@@ -7,6 +7,7 @@ const {
   getTodos,
   completeTodo,
   deleteTodo,
+  getTodo,
 } = require("../controller/todo");
 
 const { newTask, getTask, singleTask } = require("../controller/task");
@@ -23,7 +24,10 @@ router.post("/singletask", authenticate, singleTask);
 // Create Todo
 router.post("/todo", authenticate, newTodo);
 
-// Update Tod
+// Get Single Todo
+router.post("/gettodo", getTodo);
+
+// Update Todo
 router.post("/update", authenticate, updateTodo);
 
 // Complete Todo

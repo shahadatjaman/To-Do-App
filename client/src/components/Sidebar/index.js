@@ -22,7 +22,7 @@ import { getTasks } from "../../feature/task";
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(true);
 
-  const { tasks } = useSelector((state) => state.task);
+  const { tasks, task } = useSelector((state) => state.task);
   const { user } = useSelector((state) => state.auth);
 
   const toggle = () => setIsOpen(!isOpen);

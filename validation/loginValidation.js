@@ -1,6 +1,5 @@
 module.exports = {
   loginvalidation({ email, password }) {
-    console.log(email, password);
     const errors = {};
     // Validation
     if (!email) {

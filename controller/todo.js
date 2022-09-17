@@ -46,9 +46,24 @@ module.exports = {
     });
 
     let createdTodo = await newTodo.save();
-    task.todos.push(createdTodo._id);
-    await task.save();
+
     res.status(200).json({ todo: createdTodo });
+  },
+
+  // Get Todo
+  async getTodo(req, res) {
+    let { taskId } = req.body;
+
+    if (!taskId) {
+      return clientError(res, "Must Provid Task ID!");
+    }
+    const todo = await Todo.find({ taskId });
+    if (!todo) {
+      return clientError(res, "Todo Not Found!");
+    }
+    res.status(200).json({
+      todo,
+    });
   },
 
   // Update Todo

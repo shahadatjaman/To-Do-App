@@ -6,7 +6,6 @@ module.exports = {
     return res.status(400).json({ message });
   },
   successLogin({ res, token, message }) {
-    console.log(token);
     return res.status(200).json({ message, token });
   },
 };
