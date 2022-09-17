@@ -39,6 +39,7 @@ const Task = () => {
   useEffect(() => {
     dispatch(filter("all"));
   });
+
   return (
     <Wrapper>
       <TopSection>

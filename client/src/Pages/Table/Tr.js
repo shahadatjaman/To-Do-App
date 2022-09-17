@@ -10,8 +10,11 @@ import { Tr, Td, Edit, Delete, Complete, InComplete } from "./styles";
 
 import { completeTodo } from "../../feature/todo";
 
+import { deleteTodo, deletedTodo } from "../../feature/todo";
+
 const SingleRow = ({ todo }) => {
   const [isComplete, setIsComplete] = useState(false);
+  const [updatedAble, setUpdatedAble] = useState(false);
 
   useEffect(() => {
     if (todo.isComplete) {
@@ -32,6 +35,20 @@ const SingleRow = ({ todo }) => {
     dispatch(completeTodo({ todoId: id }));
   };
 
+  const deleteATodo = (id) => {
+    dispatch(deleteTodo(id));
+    dispatch(deletedTodo(id));
+  };
+
+  const updateHandler = () => {
+    if (updatedAble) {
+      setUpdatedAble(false);
+    } else {
+      setUpdatedAble(true);
+    }
+    console.log(updatedAble);
+  };
+
   return (
     <Tr style={{ marginTop: "1rem" }}>
       <Td>
@@ -46,16 +63,17 @@ const SingleRow = ({ todo }) => {
             style={{ color: "green", marginRight: "8px" }}
           />
         )}
-        {todo.title}
+        {updatedAble && <input value={todo.title} />}
+        {!updatedAble && todo.title}
       </Td>
       <Td>{moment(todo.createdAt).fromNow(true)}</Td>
       <Td>{todo.date}</Td>
       <Td>
-        <Edit>
+        <Edit onClick={updateHandler}>
           <BsFillPenFill />
         </Edit>
 
-        <Delete>
+        <Delete onClick={() => deleteATodo(todo._id)}>
           <BsFillTrashFill />
         </Delete>
       </Td>

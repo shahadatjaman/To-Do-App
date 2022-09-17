@@ -6,6 +6,7 @@ const initialState = {
   isLoading: false,
   serachedText: "all",
   filteredText: "all",
+  deletedTodoId: null,
 };
 
 // Create New Todos
@@ -54,14 +55,42 @@ export const completeTodo = createAsyncThunk(
   async (action, { rejectWithValue }) => {
     const token = localStorage.getItem("userInfo");
     try {
-      const response = await fetch("/complete", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(action),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}/complete`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(action),
+        }
+      );
+
+      return response.json();
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+// Delete todo item
+export const deleteTodo = createAsyncThunk(
+  "delete/todo",
+  async (action, { rejectWithValue }) => {
+    const token = localStorage.getItem("userInfo");
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}/delete`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ todoId: action }),
+        }
+      );
 
       return response.json();
     } catch (err) {
@@ -83,6 +112,13 @@ const todoSlice = createSlice({
     },
     filter: (state, { payload }) => {
       state.filteredText = payload;
+    },
+    addTodos: (state, { payload }) => {
+      state.todos = payload;
+    },
+    deletedTodo: (state, { payload }) => {
+      // console.log(payload);
+      state.deletedTodoId = payload;
     },
   },
   extraReducers: {
@@ -121,9 +157,21 @@ const todoSlice = createSlice({
     [completeTodo.rejected]: (state, { payload }) => {
       state.isLoading = false;
     },
+
+    // Delete todo item
+    [deleteTodo.pending]: (state) => {
+      state.taskLoading = true;
+    },
+    [deleteTodo.fulfilled]: (state, { payload }) => {
+      console.log(payload);
+    },
+    [deleteTodo.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+    },
   },
 });
 
-export const { addTask, search, filter } = todoSlice.actions;
+export const { addTask, search, filter, addTodos, deletedTodo } =
+  todoSlice.actions;
 
 export default todoSlice.reducer;

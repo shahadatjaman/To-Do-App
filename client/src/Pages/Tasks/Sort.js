@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { Option, Select } from "./styles";
 
@@ -18,6 +18,7 @@ const Sort = () => {
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
+    setValue(e.target.value);
     dispatch(filter(e.target.value));
   };
 
@@ -26,7 +27,6 @@ const Sort = () => {
       <Option selected disabled>
         Sort
       </Option>
-      <Option value={value.favourit}>Favourit</Option>
       <Option value={value.complete}>Complete</Option>
       <Option value={value.incomplete}>Incomplete</Option>
     </Select>

@@ -146,3 +146,5 @@ export const SearchInput = styled.input`
   width: 100%;
   box-shadow: 6px 8px 66px 0px #dddddd69;
 `;
+
+export const Submit = styled.button``;
