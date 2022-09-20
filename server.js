@@ -20,6 +20,13 @@ require("./passport")(passport);
 
 app.use("/auth", authRoute);
 app.use("/", require("./routes/task"));
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+  app.get("/", (req, res) => {
+    res.send("Welcome");
+  });
+}
 mongoose
   .connect(process.env.DB_URL)
   .then((res) => {
