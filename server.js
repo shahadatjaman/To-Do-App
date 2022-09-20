@@ -6,6 +6,7 @@ const httpServer = createServer(app);
 const { mongoose } = require("mongoose");
 const passport = require("passport");
 const cors = require("cors");
+import path from "path";
 
 const authRoute = require("./routes/auth");
 require("dotenv").config();
