@@ -21,7 +21,7 @@ require("./passport")(passport);
 app.use("/auth", authRoute);
 app.use("/", require("./routes/task"));
 mongoose
-  .connect("mongodb://localhost:27017/myRandomDB")
+  .connect(process.env.DB_URL)
   .then((res) => {
     console.log("DB Connected!");
     httpServer.listen(process.env.PORT || 5000, () => {
