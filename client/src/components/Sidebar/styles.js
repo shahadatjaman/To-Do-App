@@ -24,12 +24,13 @@ export const SideBar = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
   transition: all 0.5s;
+  position: relative;
 `;
 
 export const TopSection = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   padding: 20px 15px;
   position: relative;
 `;
@@ -80,4 +81,20 @@ export const Plus = styled.span`
   display: block;
   text-align: center;
   line-height: 2.5rem;
+`;
+
+export const LogoutWrapper = styled.div`
+  font-size: 17px;
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border-radius: 50px;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  svg {
+    color: red;
+  }
 `;

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
-import { TableWrapper, Tablee, Th, Tr, Td } from "../Table/styles";
+import { useNavigate } from "react-router-dom";
+import { TableWrapper, Tablee, Th, Tr, Td, Form } from "../Table/styles";
 
 import { Empty } from "../Tasks/styles";
 
@@ -9,13 +9,15 @@ import SingleRow from "./Tr";
 
 import { search } from "../../feature/todo/";
 
-import { filter, deletedTodo, addTodos } from "../../feature/todo/";
+import { addTodos, updateTodo } from "../../feature/todo/";
 
 const Table = () => {
-  let { todos, serachedText, filteredText, deletedTodoId } = useSelector(
-    (state) => state.todo
-  );
+  let { todos, serachedText, filteredText, deletedTodoId, updatedToodText } =
+    useSelector((state) => state.todo);
+
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   let searchedTodos = [];
 
@@ -57,20 +59,33 @@ const Table = () => {
     return <Empty>No todos found!</Empty>;
   }
 
+  const updateHandler = (e) => {
+    e.preventDefault();
+    let todo = {
+      todoId: updatedToodText._id,
+      title: updatedToodText.title,
+      date: updatedToodText.date,
+    };
+    dispatch(updateTodo({ todo, navigate }));
+  };
+
   return (
     <TableWrapper>
-      <Tablee>
-        <Tr>
-          <Th>Name</Th>
-          <Th>Status</Th>
-          <Th>Date</Th>
-          <Th>Action</Th>
-        </Tr>
-        {searchedTodos?.map((item) => (
-          <SingleRow todo={item} />
-        ))}
-      </Tablee>
-      {todos && todos?.length === 0 && <Empty>Not Found!</Empty>}
+      <Form onSubmit={updateHandler}>
+        <Tablee>
+          <Tr>
+            <Th>Name</Th>
+            <Th>Status</Th>
+            <Th>Date</Th>
+            <Th>Action</Th>
+          </Tr>
+
+          {searchedTodos?.map((item) => (
+            <SingleRow todo={item} />
+          ))}
+        </Tablee>
+        {todos && todos?.length === 0 && <Empty>Not Found!</Empty>}
+      </Form>
     </TableWrapper>
   );
 };

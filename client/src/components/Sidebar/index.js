@@ -19,6 +19,8 @@ import {
 
 import { getTasks } from "../../feature/task";
 
+import Logout from "./Logout";
+
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -44,11 +46,12 @@ const Sidebar = ({ children }) => {
               <Plus>+</Plus>
             </Logo>
           </Link>
+          <Logout />
           <Bars style={{ marginLeft: isOpen ? "50px" : "0px" }}>
             <AiOutlineCaretRight onClick={toggle} />
           </Bars>
         </TopSection>
-        <Link to={`/dashboard`} activeclassName="active">
+        <Link to={`/`} activeclassName="active">
           <Icon>
             <FaTh />
           </Icon>

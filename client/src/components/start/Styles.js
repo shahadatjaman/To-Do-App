@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { NavLink } from "react-router-dom";
+
 export const Wrrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -82,4 +84,12 @@ export const LoginBtn = styled.button`
   font-size: 14px;
   border-radius: 6px;
   cursor: pointer;
+`;
+
+export const Link = styled(NavLink)`
+  margin-top: 1rem;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  display: block;
 `;

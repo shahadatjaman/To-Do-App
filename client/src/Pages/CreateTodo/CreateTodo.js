@@ -45,6 +45,8 @@ const AddTodo = () => {
     dispatch(createNewTodo({ values, navigate }));
   };
 
+  console.log(values);
+
   const { title, date, desc } = values;
   return (
     <TodoWrapper>

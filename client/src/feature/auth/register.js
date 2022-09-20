@@ -51,9 +51,10 @@ export const signIn = createAsyncThunk(
         if (resp.status === 400) {
           let message = await resp.json();
           return message;
+        } else {
+          navigate("/");
+          return resp.json();
         }
-        navigate("/");
-        return resp.json();
       })
       .catch((error) => console.log(error));
   }

@@ -2,7 +2,15 @@ import { useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { H1, Input, LoginBtn, LoginForm, LoginWrapper, Error } from "./Styles";
+import {
+  H1,
+  Input,
+  LoginBtn,
+  LoginForm,
+  LoginWrapper,
+  Error,
+  Link,
+} from "./Styles";
 
 import { useState } from "react";
 
@@ -60,6 +68,7 @@ const Login = () => {
         ) : (
           <LoginBtn type="submit">Login</LoginBtn>
         )}
+        <Link to="/signup">Create a Account</Link>
       </LoginForm>
     </LoginWrapper>
   );

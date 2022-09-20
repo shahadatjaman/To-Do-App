@@ -6,6 +6,7 @@ const initialState = {
   isLoading: false,
   serachedText: "all",
   filteredText: "all",
+  updatedToodText: null,
   deletedTodoId: null,
 };
 
@@ -26,6 +27,7 @@ export const createNewTodo = createAsyncThunk(
       .then(async (response) => {
         let { todo } = await response.json();
 
+        console.log(todo);
         navigate(`/task_name/${todo.taskId}`);
 
         return response.json();
@@ -74,6 +76,30 @@ export const completeTodo = createAsyncThunk(
   }
 );
 
+// Update Todo
+export const updateTodo = createAsyncThunk(
+  "update/todo",
+  async ({ todo, navigate }) => {
+    const token = localStorage.getItem("userInfo");
+
+    return await fetch(`${process.env.REACT_APP_SERVER_URL}/update`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify(todo),
+    })
+      .then(async (response) => {
+        const { todo } = await response.json();
+
+        navigate(`/task_name/${todo.taskId}`);
+        return response.json();
+      })
+      .catch((error) => console.log(error));
+  }
+);
+
 // Delete todo item
 export const deleteTodo = createAsyncThunk(
   "delete/todo",
@@ -115,6 +141,9 @@ const todoSlice = createSlice({
     },
     addTodos: (state, { payload }) => {
       state.todos = payload;
+    },
+    updatedTodo: (state, { payload }) => {
+      state.updatedToodText = payload;
     },
     deletedTodo: (state, { payload }) => {
       // console.log(payload);
@@ -158,6 +187,17 @@ const todoSlice = createSlice({
       state.isLoading = false;
     },
 
+    // Update the Todo
+    [updateTodo.pending]: (state) => {
+      state.taskLoading = true;
+    },
+    [updateTodo.fulfilled]: (state, { payload }) => {
+      console.log(payload);
+    },
+    [updateTodo.rejected]: (state, action) => {
+      console.log(action);
+    },
+
     // Delete todo item
     [deleteTodo.pending]: (state) => {
       state.taskLoading = true;
@@ -171,7 +211,7 @@ const todoSlice = createSlice({
   },
 });
 
-export const { addTask, search, filter, addTodos, deletedTodo } =
+export const { addTask, search, filter, addTodos, deletedTodo, updatedTodo } =
   todoSlice.actions;
 
 export default todoSlice.reducer;

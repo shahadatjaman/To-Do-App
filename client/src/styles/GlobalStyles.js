@@ -35,7 +35,7 @@ button{
    border: none
 }
 input:focus{
-    border: none !important;
+    /* border: none !important; */
    outline: none;
 }
 textarea:focus{

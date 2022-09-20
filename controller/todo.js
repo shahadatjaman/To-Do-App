@@ -68,7 +68,7 @@ module.exports = {
 
   // Update Todo
   async updateTodo(req, res) {
-    let { todoId, title, group, date } = req.body;
+    let { todoId, title, date } = req.body;
 
     if (!todoId) {
       return res.status(400).json({ message: "Must provid Todo Id!" });
@@ -76,7 +76,7 @@ module.exports = {
 
     let todo = await Todo.findOneAndUpdate(
       { _id: todoId },
-      { $set: { title, group, date } }
+      { $set: { title, date } }
     );
 
     res.status(200).json({

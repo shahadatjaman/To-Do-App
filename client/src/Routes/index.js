@@ -14,7 +14,7 @@ import Login from "../components/start/login";
 
 import { Navigate } from "react-router-dom";
 
-import jwtDecode from "jwt-decode";
+import Home from "../Pages/Home";
 
 const ProtectRoute = ({ children }) => {
   let token = localStorage.getItem("userInfo");
@@ -56,6 +56,14 @@ export const routes = [
       {
         path: "createtask",
         element: <CreateTask />,
+      },
+      {
+        path: "",
+        element: (
+          <ProtectRoute>
+            <Home />
+          </ProtectRoute>
+        ),
       },
     ],
   },

@@ -13,6 +13,7 @@ import {
   Submit,
   H1,
   Error,
+  Link,
 } from "./Styles";
 
 import { checkUser, signUp } from "../../feature/auth/register";
@@ -112,6 +113,7 @@ const Email = () => {
             </Button>
           )}
         </form>
+        <Link to={"/login"}>Have alredy an Account, Login.</Link>
       </Start>
     </Wrrapper>
   );
